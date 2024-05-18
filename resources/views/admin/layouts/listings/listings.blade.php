@@ -39,7 +39,7 @@
                 <!-- ============================================================== -->
                 <div class="row">
                 <div class="col-12">
-                    @if(count($unpublished_listings) > 0)
+                    @if(count($unpublished_listings) >= 0)
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">New Listings</h4>
@@ -70,7 +70,7 @@
                                             <td>@if ( $listing -> is_published == '1' )
                                                     Published
                                                 @else
-                                                    Un Publish
+                                                    UnPublish
                                                 @endif
                                             </td>
                                             <td>{{ $listing -> created_at->diffForHumans() }}</td>
@@ -84,7 +84,11 @@
                                             
                                         <button  type="submit" class="btn btn-sm btn-rounded btn-danger">Delete</button>
                                             </form> --}}
-                                        <button onclick="deleteData('{{ route('listings.destroy', $listing -> id) }}','{{ $listing -> id }}')" type="submit" class="btn btn-sm btn-rounded btn-danger">Delete</button>
+                                            <button onclick="deleteData('{{ route('listings.destroy', $listing->id) }}', '{{ $listing->id }}')" type="button" class="btn btn-sm btn-rounded btn-danger">Delete</button>
+
+
+
+
 
                                         </td>
                                         </tr>
@@ -95,7 +99,7 @@
                             </div>
                         </div>
                     @endif
-                    @if(count($published_listings) > 0)
+                    @if(count($published_listings) >= 0)
                         <div class="card">
                             <div class="card-body">
 

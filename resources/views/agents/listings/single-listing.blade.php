@@ -1,5 +1,6 @@
-@extends('admin.base')
+@extends('site.base')
 
+@section('title') My Listings | @endsection
 @section('content')
 
 <!-- ============================================================== -->
@@ -12,16 +13,16 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-5 align-self-center">
-                        <h4 class="page-title">SingeListings</h4>
+                        <h4 class="page-title">Profile</h4>
                     </div>
                     <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <a href="{{ route('mylisting.index') }}">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">SingeListings</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
                                 </ol>
                             </nav>
                         </div>
@@ -87,7 +88,7 @@
                     <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card">
                             <div class="card-body">
-                            <form action="{{ route('listings.update', $listing -> id) }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
+                            <form action="{{ route('mylisting.update', $listing -> id) }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
                         @csrf
                         @method('PATCH') 
                         
@@ -207,7 +208,7 @@
                             <div class="col-sm-12">
                                 <select  name="realtor_id" class="form-control form-control-line" required>
                                 <option  style="display:none">Select Realtor</option>
-                                <option value="{{ $listing -> realtor-> id }}" selected >{{ $listing -> realtor-> name }}</option>
+                                    <option value="{{ $listing -> realtor-> id }}" selected >{{ $listing -> realtor-> name }}</option>
                                 </select>
                             </div>
                         </div>

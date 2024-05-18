@@ -1,7 +1,20 @@
-@extends('admin.base')
+@extends('site.base')
 
+@section('title') BecomeRealtor | @endsection
 @section('content')
 
+<section id="showcase-inner" class="py-5 text-white">
+    <div class="container">
+    <div class="row text-center">
+        <div class="col-md-12">
+        <h1 class="display-4">Realtor</h1>
+        <p class="lead">Become a realtor to sell your house & property.</p>
+        </div>
+    </div>
+    </div>
+</section>
+
+    
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
@@ -10,7 +23,7 @@
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
-        <div class="row">
+        <div class="row px-3">
             <div class="col-5 align-self-center">
                 <h4 class="page-title">Add Realtor</h4>
             </div>
@@ -50,31 +63,18 @@
                     </ul>
                 </div><br />
                 @endif
-                    <form action="{{ route('realtors.store') }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
+                    <form action="{{ route('becomerealtor.store') }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
                         @csrf
                         
                         <div class="form-group">
                             <label>Realtor Name :</label>
-                            <input type="text" name="name" class="form-control" placeholder="Realtor Name">
+                            <input readonly type="text" name="name" class="form-control" placeholder="Realtor Name" value="{{ Auth::user()->get_full_name() }}">
                         </div>
-
-                        <!-- <div class="form-group">
-                            <label>Email :</label>
-                            <input type="email" id="example-email" name="email" class="form-control" placeholder="Email">
-                        </div> -->
-
                         <div class="form-group">
-                            <label class="col-sm-12">Email :</label>
-                            <div class="col-sm-12">
-                                <select name="email" class="form-control form-control-line" required>
-                                <option value="" selected style="display:none">Email</option>
-                                @foreach($user as $users)
-                                    <option value="{{ $users->email }}" >{{ $users->email }}</option>
-                                @endforeach
-                                </select>
-                            </div>
+                            <label>Email :</label>
+                            <input readonly type="email" id="example-email" name="email" class="form-control" placeholder="Email" value="{{ Auth::user()->get_email() }}">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Address :</label>
                             <input type="text" id="example-email" name="address" class="form-control" placeholder="Address">
@@ -119,4 +119,5 @@
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->
 <!-- ============================================================== -->
+
 @endsection

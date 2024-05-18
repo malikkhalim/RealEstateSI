@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\User;
 use App\Realtor;
 use App\Listing;
 use Session;
@@ -18,7 +20,8 @@ class RealtorController extends Controller
 
     public function create()
     {
-        return view('admin.layouts.realtors.add_realtor');
+        $user = User::all();
+        return view('admin.layouts.realtors.add_realtor', compact('user'));
     }
 
 
@@ -28,7 +31,7 @@ class RealtorController extends Controller
         $request->validate([
             'name'=>'required',
             'address'=>'required',
-            'email'=>'required',
+            'email'=>'required|email|unique:realtors,email',
             'contact_number'=>'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
@@ -49,7 +52,7 @@ class RealtorController extends Controller
         }else{
             return redirect()->back()->with('error', 'Something went wrong!');
         }
-     
+
     }
 
 
@@ -66,7 +69,9 @@ class RealtorController extends Controller
             'name'=>'required',
             'address'=>'required',
             'email'=>'required',
-            'contact_number'=>'required'
+            'contact_number'=>'required',
+            'activate'=>'required'
+
         ]);
 
         $realtor = Realtor::findOrFail($id);
@@ -74,26 +79,48 @@ class RealtorController extends Controller
         $realtor -> address = $request->get('address');
         $realtor -> email = $request->get('email');
         $realtor -> contact_number = $request->get('contact_number');
+        $realtor -> activate = $request->get('activate');
+        
+        $activate = $realtor -> activate;
+        $roleEmail = $realtor -> email;
+        $user = User::where('email', $roleEmail)->firstOrFail();
+        $userId = $user->id;
+        
+        $user = User::findOrFail($userId);
+        // dd($user->role);
+        
+        if ($user->role != "0") {
+            # code...
+        }
+        if ($activate == 1 && $user->role != "0") {
+            $user->role = "1";
+        } elseif($activate == 0 && $user->role != "0") {
+            $user->role = "2";
+        }
+        
+        $user->save();
         
         //storing redirect route & success message
         $successMessage = redirect(route('realtors.index'))->with('success', 'Realtor Updated!');
-
+        
         if(!$request->image){
-            $realtor->save();
+            $realtor->save(); 
             return $successMessage;
         }
         elseif(file_exists($realtor->image)){  //check the file exist or not
-
             unlink($realtor->image);
         }
         //call custom file upload function
         $isSuccess = $this -> imageUploadHandler($request->image, $request->name, $realtor);
         
         if($isSuccess){
+            
             return $successMessage;
         }else{
             return redirect()->back()->with('error', 'Something went wrong!');
         }
+        
+
     }
 
     public function destroy($id)

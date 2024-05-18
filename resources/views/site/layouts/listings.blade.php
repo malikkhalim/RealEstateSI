@@ -36,7 +36,7 @@
       <div class="row">
 
         <!-- Listing 1 -->
-@if(count($listings) > 0)
+        @if(count($listings) > 0)
         @foreach($listings as $listing)
         <div class="col-md-6 col-lg-4 mb-4">
           <div class="card listing-preview">
@@ -66,16 +66,39 @@
                   <i class="fas fa-bath"></i> Bathrooms: {{ $listing ->bathroom }}</div>
               </div>
               <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-12">
-                  <i class="fas fa-user"></i> {{ $listing -> realtor-> name }}</div>
+              <div class="row mb-3 text-secondary">
+                  <div class="col-6">
+                    <i class="fas fa-user"></i> {{ $listing -> realtor-> name }}
+                  </div>
+                  <div class="col-6">
+                    <i class="fas fa-clock"></i> {{ $listing -> created_at->diffForHumans() }} 
+                  </div>
               </div>
-              <div class="row text-secondary pb-2">
+              <div class="row text-secondary">
                 <div class="col-6">
-                  <i class="fas fa-clock"></i> {{ $listing -> created_at->diffForHumans() }} </div>
+                  <i class="fas fa-eye"></i>
+                  Views : {{ $listing->views()->count() }}
+                </div>
+                  <div class="col-6">
+                    <i class="fas fa-bookmark"></i>
+                    Shortlisted: {{ $listing->shortlists()->count() }}</div>
               </div>
+
+
+
+
+              <!-- <div class="col-12 mt-3">
+                <div class="row ">
+                    <div class="col">
+                        <p>Views : {{ $listing->views()->count() }}</p>
+                    </div>
+                    <div class="col">
+                        <p>Shortlisted: {{ $listing->shortlists()->count() }}</p>
+                    </div>
+                </div>
+              </div> -->
               <hr>
-              <a href="{{ route('single.listing', $listing -> id) }}" class="btn btn-primary btn-block">More Info</a>
+              <a href="{{ route('single.listing', $listing -> id) }}" class="btn btn-primary btn-block">More Information</a>
             </div>
           </div>
         </div>

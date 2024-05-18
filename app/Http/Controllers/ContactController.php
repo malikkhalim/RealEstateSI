@@ -32,7 +32,7 @@ class ContactController extends Controller
 
         ]);
 
-        $isSuccess =$contact->save();
+        $isSuccess = $contact->save();
         if ($isSuccess) {
             $notification = array(
                 'message' => 'Post created successfully!',

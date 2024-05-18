@@ -1,26 +1,38 @@
-@extends('admin.base')
+@extends('site.base')
 
+@section('title') Inquiry | @endsection
 @section('content')
 
-        <!-- Page wrapper  -->
+<section id="showcase-inner" class="py-5 text-white">
+    <div class="container">
+    <div class="row text-center">
+        <div class="col-md-12">
+        <h1 class="display-4">Inquiry</h1>
+        <p class="lead">Choose Your Buyer</p>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- Page wrapper  -->
         <!-- ============================================================== -->
    
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="page-breadcrumb">
-                <div class="row">
+                <div class="row px-3">
                     <div class="col-5 align-self-center">
-                        {{-- <h4 class="page-title">Basic Table</h4> --}}
+                        <h4 class="page-title">Inquiries</h4>
                     </div>
                     <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <a href="{{ route('index') }}">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Realtors</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Inquiries</li>
                                 </ol>
                             </nav>
                         </div>
@@ -42,46 +54,45 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <h4 class="card-title">All Realtors</h4>
-                                <a href="{{ route('realtors.create') }}"><span class="tr btn btn-sm btn-rounded btn-info">Add Realtors</span></a>
+                                <h4 class="card-title">All Inquiries</h4>
                             </div>
                             <div class="table-responsive m-t-20">
                                 <table class="table table-bordered table-responsive-lg">
                                     <thead>
                                         <tr>
+
                                             <th scope="col">#</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Email</th>
-                                            <th scope="col">Contact</th>
-                                            <th scope="col">address</th>
-                                            <th scope="col">Active</th>
+                                            <th scope="col">Contact Number</th>
+                                            <th scope="col">Listing</th>
+                                            <th scope="col">User</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($realtors as $realtor)
-                                        <tr id="row_{{$realtor->id}}">
-                                            <th scope="row">{{ $loop->iteration }}</th>
-                                            <td>{{ $realtor -> name }}</td>
-                                            <td>{{ $realtor -> email }}</td>
-                                            <td>{{ $realtor -> contact_number }}</td>
-                                            <td>{{ $realtor -> address }}</td>
-                                            <td>{{ $realtor->activate == 0 ? 'Not Activated' : 'Activated' }}</td>
-                                            <td>
-                                            <a href="{{ route('realtors.show', $realtor -> id ) }}"><span class="btn btn-sm btn-rounded btn-success">View</span></a>
 
-                                            <form style="display:inline-block" method="POST" action="{{ route('realtors.destroy', $realtor -> id) }}">
-                                            @csrf
-                                            @method('DELETE')
+                                        @foreach($inquiries as $inquiry)
+                                        <tr id="row_{{$inquiry->id}}">
+                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td>{{ $inquiry -> name }}</td>
+                                            <td>{{ $inquiry -> email }}</td>
+                                            <td>{{ $inquiry -> contact_number }}</td>
+                                            <td>{{ $inquiry -> listing-> title }}</td>
+                                            <td>{{ $inquiry -> user-> username }}</td>
+                                            <td>
+                                                <a href="{{ route('inquiries.show', $inquiry -> id ) }}"><span class="btn btn-sm btn-rounded btn-success">View</span></a>
+                                            </td>
                                             
-                                        </form>
-                                        <button onclick="deleteData('{{ route('realtors.destroy', $realtor->id) }}', '{{ $realtor->id }}')" type="submit" class="btn btn-sm btn-rounded btn-danger">Delete</button>
-                                        </td>
                                         </tr>
                                         @endforeach
 
                                     </tbody>
                                 </table>
+                                 {{-- Pagination --}}
+                                <div class="d-flex justify-content-center py-5 ">
+                                    {!! $inquiries->links() !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,6 +115,4 @@
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
-
-        
 @endsection

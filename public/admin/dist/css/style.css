@@ -2342,6 +2342,16 @@ input[type="button"].btn-block {
   border: 1px solid #e9ecef;
   border-radius: 2px; }
 
+#dropdownMenuButton{
+  color: black !important;}
+  /* .dashboardropdown .btn:hover, .dashboardropdown .btn:focus{
+    text-decoration: none;
+  } */
+
+  .dashboardropdown a{
+    background-color: bla !important;
+  }
+
 .dropdown-menu-right {
   right: 0;
   left: auto; }

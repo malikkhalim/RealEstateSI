@@ -66,8 +66,8 @@
                                             <td>{{ $inquiry -> name }}</td>
                                             <td>{{ $inquiry -> email }}</td>
                                             <td>{{ $inquiry -> contact_number }}</td>
-                                            <td>{{ $inquiry -> listing-> title }}</td>
-                                            <td>{{ $inquiry -> user-> username }}</td>
+                                            <td>{{ $inquiry->listing ? $inquiry->listing->title : 'N/A' }}</td>
+                                            <td>{{ $inquiry->user ? $inquiry->user->username : 'N/A' }}</td>
                                             <td>
                                                 <a href="{{ route('inquiries.show', $inquiry -> id ) }}"><span class="btn btn-sm btn-rounded btn-success">View</span></a>
                                             </td>

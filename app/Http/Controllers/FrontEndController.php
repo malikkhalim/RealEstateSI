@@ -6,6 +6,8 @@ use App\{
     Realtor,
     Contact,
     Som,
+    PropertyView,
+    Shortlist
 };
 
 use Illuminate\Support\Facades\Auth;
@@ -28,12 +30,12 @@ class FrontEndController extends Controller
         return view('site.layouts.listings', compact('listings'));
     }
     
-    public function listing($id)
-    {
+    // public function listing($id)
+    // {
 
-        $listing = Listing::with('realtor')->where('is_published','1')->findOrFail($id);
-        return view('site.layouts.listing', compact('listing'));
-    }
+    //     $listing = Listing::with('realtor')->where('is_published','1')->findOrFail($id);
+    //     return view('site.layouts.listing', compact('listing'));
+    // }
 
 
 
@@ -45,6 +47,19 @@ class FrontEndController extends Controller
         return view('site.layouts.about',compact('som','realtors'));
     }
 
+    public function listing($id)
+    {
+        // $listing = Listing::findOrFail($id);
+        $listing = Listing::with('realtor')->where('is_published','1')->findOrFail($id);
+        // Track view
+        PropertyView::create([
+            'listing_id' => $listing->id,
+            'user_id' => auth()->id() ?? null
+        ]);
+
+        return view('site.layouts.listing', compact('listing'));
+    }
+
 
     public function dashboard()
     {   
@@ -52,8 +67,15 @@ class FrontEndController extends Controller
         {
             $userid = Auth::id();
             $lists = Contact::with('listing')->where('user_id',$userid)->get();
-            return view('site.layouts.dashboard',compact('lists'));
+            $shortlistedProperties = Shortlist::with('listing', 'user')->where('user_id',$userid)->get();
+            return view('site.layouts.dashboard',compact('shortlistedProperties'));
         }
+    }
+
+    public function calculation($id)
+    {
+        $listing = Listing::findOrFail($id);
+        return view('site.layouts.calculation', compact('listing'));
     }
 
 

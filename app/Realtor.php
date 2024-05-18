@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Realtor extends Model
 {
     protected $fillable = [
-        'name','address', 'email', 'contact_number','image'
+        'name','address', 'email', 'contact_number','image', "activate"
 
     ];
 
@@ -21,4 +21,9 @@ class Realtor extends Model
 
         return $this->hasOne(Som::class);
     }
+
+    public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
 }

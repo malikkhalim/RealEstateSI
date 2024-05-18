@@ -9,7 +9,7 @@
     <div class="row text-center">
       <div class="col-md-12">
         <h1 class="display-4">User Dashboard</h1>
-        <p class="lead">Manage your BT Real Estate account</p>
+        <p class="lead">Get The Real House</p>
       </div>
     </div>
   </div>
@@ -30,35 +30,46 @@
   </div>
 </section>
 
-<section id="dashboard" class="py-4">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Welcome {{ Auth::user()->get_full_name() }} </h2>
-        <p>Here are the property listings that you have inquired about</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Property</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($lists as $list)
-            <tr>
-              <td>22</td>
-              <td>{{ $list ->listing -> title }}</td>
-              <td>
-                <a class="btn btn-light" href="{{ route('single.listing', $list-> listing -> id) }}">View Listing</a>
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+
+
+<div class="container mt-5">
+
+  <!-- Shortlisted Properties -->
+  <div class="card mt-4">
+      <div class="card-header">
+          <h2>Shortlisted Properties</h2>
       </div>
-    </div>
+      <div class="card-body">
+          @if($shortlistedProperties->isEmpty())
+              <p>No properties have been shortlisted yet.</p>
+          @else
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Property Title</th>
+                          <th>Price</th>
+                          <th>Description</th>
+                          <th>Date Upload</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($shortlistedProperties as $shortlist)
+                          <tr>
+                              <td>{{ $shortlist->listing->title }}</td>
+                              <td>${{ $shortlist->listing->price }}</td>
+                              <td>{{ $shortlist->description }}</td>
+                              <td>{{ $shortlist->created_at->format('d-m-Y') }}</td>
+                              <td>
+                                  <a href="{{ route('single.listing', $shortlist-> listing -> id) }}" class="btn btn-info">View Property</a>
+                              </td>
+                          </tr>
+                      @endforeach
+                  </tbody>
+              </table>
+          @endif
+      </div>
   </div>
-</section>
+</div>
 
 @endsection

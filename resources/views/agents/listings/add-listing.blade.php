@@ -1,5 +1,6 @@
-@extends('admin.base')
+@extends('site.base')
 
+@section('title') My Listings | @endsection
 @section('content')
 
 <!-- ============================================================== -->
@@ -10,7 +11,7 @@
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
-        <div class="row">
+        <div class="row px-3">
             <div class="col-5 align-self-center">
                 <h4 class="page-title">Add Listing</h4>
             </div>
@@ -19,7 +20,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="#">Home</a>
+                                <a href="{{ route('mylisting.index') }}">Home</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Add Listing</li>
                         </ol>
@@ -50,7 +51,7 @@
                     </ul>
                 </div><br />
                 @endif
-                    <form action="{{ route('listings.store') }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
+                    <form action="{{ route('mylisting.store') }}" method="POST" class="form-horizontal m-t-30" enctype="multipart/form-data"> 
                         @csrf
                         
                         <div class="form-group">
@@ -82,7 +83,7 @@
                             <label>Garage :</label>
                             <input type="number" name="garage" class="form-control"  value="{{ old('garage') }}" placeholder="Garage">
                         </div>
-                          
+
                         <div class="form-group">
                             <label>City :</label>
                             <input type="text" name="city" class="form-control"  value="{{ old('city') }}" placeholder="City">
@@ -102,7 +103,6 @@
                                 <div class="custom-file">
                                 <input type="file" name="image" class="custom-file-input">
                                 <label for="image" class="custom-file-label">Choose Image</label>
-                                
                                 </div>
                             </div>
 
@@ -166,20 +166,18 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-12">Realtor :</label>
-                            <div class="col-sm-12">
+                            <label class="">Realtor :</label>
+                            <div class="">
                                 <select  name="realtor_id" class="form-control form-control-line" required>
                                 <option value="" selected style="display:none">Select Realtor</option>
-                                @foreach($realtors as $realtor)
-                                    <option value="{{ $realtor->id }}" >{{ $realtor->name }}</option>
-                                @endforeach
+                                    <option value="{{ $newrealtor->id }}" > ID: {{ $newrealtor->id }} {{ $newrealtor->name }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-12">Is Publish :</label>
-                            <div class="col-sm-12">
+                            <label class="">Is Publish :</label>
+                            <div class="">
                                 <select  name="is_published" class="form-control form-control-line"  required>
                                 <option value="" selected style="display:none">Select Publish/Draft</option>
                                     <option @if (old('is_published') == "1") {{ 'selected' }} @endif value="1">Publish</option>

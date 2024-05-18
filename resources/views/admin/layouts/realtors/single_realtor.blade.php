@@ -100,6 +100,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label>Realtor Activate :</label>
+                            <!-- <input type="checkbox" name="activate" class="form-control" value="{{ $realtor -> activate }}"> -->
+                            <select  name="activate" class="form-control form-control-line" required>
+                            <!-- <option style="display:none">{{ $realtor->activate == 0 ? 'False' : 'True' }}</option> -->
+                            <option value=1 {{ $realtor->activate == 1 ? 'selected' : '' }}>Activated</option>
+                            <option value=0 {{ $realtor->activate == 0 ? 'selected' : '' }}>Not Activated</option>
+                        </select>
+                        </div>
+
                         <button type="submit" class="btn btn-success">Update</button>
                     </form>
                             </div>

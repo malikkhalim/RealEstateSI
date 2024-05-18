@@ -19,4 +19,19 @@ class Listing extends Model
     return $this->belongsTo(Realtor::class);
     }
 
+    public function reviews()
+    {
+    return $this->hasMany(Review::class);
+    }
+    
+    public function views()
+    {
+        return $this->hasMany(PropertyView::class);
+    }
+
+    public function shortlists()
+    {
+        return $this->hasMany(Shortlist::class);
+    }
+
 }

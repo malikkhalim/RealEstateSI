@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ShortlistController;
+use App\Http\Controllers\ListingController;
 
 
 Auth::routes();
@@ -8,11 +11,18 @@ Auth::routes();
 Route::get('/', 'FrontEndController@index' )->name('index');
 Route::get('/listings', 'FrontEndController@listings' )->name('listings');
 Route::get('/listing/{id}', 'FrontEndController@listing' )->name('single.listing');
+Route::get('/calculation/{id}', 'FrontEndController@calculation' )->name('calculation');
 Route::get('/dashboard', 'FrontEndController@dashboard' )->name('dashboard');
 Route::get('/about', 'FrontEndController@about' )->name('about');
 Route::get('/query', 'searchController@search' )->name('search');
 Route::get('/search', 'searchController@result' )->name('result');
 Route::post('/contact', 'ContactController@store' )->name('send-message');
+Route::resource('becomerealtor', 'NewRealtorController');
+Route::put('/realtors/{id}/update-role', [RealtorController::class, 'updateRealtorRole'])->name('realtors.updateRole');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::post('shortlist', 'ShortlistController@store')->name('shortlist.store');
+Route::delete('shortlist', 'ShortlistController@destroy')->name('shortlist.destroy');
+
 
 
 
@@ -30,6 +40,12 @@ Route::group(['prefix' => 'back','middleware' => 'isauthorize:0'], function() {
     Route::resource('inquiries', 'InquiryController');
 
 });
+
+Route::group(['prefix' => 'forward','middleware' => 'isauthorize:1'], function() {
+    Route::resource('inquiry', 'InquiryRealtorController' );
+    Route::resource('mylisting', 'ListingRealtorController' );
+});
+
 
 
 

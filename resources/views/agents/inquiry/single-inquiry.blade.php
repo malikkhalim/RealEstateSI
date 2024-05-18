@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-body">
                             <center class="m-t-30">
-                                    <h4 class="card-title m-t-10">{{ $inquiry->user ? $inquiry->user->username : 'N/A' }}</h4>
+                                    <h4 class="card-title m-t-10">{{ $inquiry ->user-> username }}</h4>
 
                             </center>
                             </div>
@@ -36,8 +36,7 @@
                                     <div class="form-group">
                                         <label class="col-md-12">Listing :</label>
                                         <div class="col-md-12">
-                                            <td>{{ $inquiry->listing ? $inquiry->listing->title : 'N/A' }}</td>
-                                            
+                                            <td>{{ $inquiry -> listing -> title }}</td>
                                             <td class="mr-5">
                                                 <a href="{{ route('single.listing', $inquiry -> listing -> id ) }}"><span class="btn btn-sm btn-rounded btn-success">View</span></a>
                                             </td>

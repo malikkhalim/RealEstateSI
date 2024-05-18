@@ -21,19 +21,40 @@
             <a class="nav-link" href="{{ route('about') }}">About</a>
           </li>
         </ul>
-
+        
+        
         <ul class="navbar-nav ml-auto">
           @auth
-          <li class="nav-item mr-3 {{ (request()->routeIs('dashboard')) ? 'active' : '' }}">
+          <!-- <li class="nav-item mr-3 {{ (request()->routeIs('dashboard')) ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dashboard') }}">
               <i class="fas fa-user-plus"></i> Dashboard</a>
-          </li>
-          <li class="nav-item mr-3">
+            </li>
+            <li class="nav-item mr-3"> -->
+          <div class="dropdown mr-3 {{ (request()->routeIs('dashboard')) ? 'active' : '' }}">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgba(0, 0, 0, 0.5) !important;">
+              {{ Auth::user()->get_full_name() }}
+            </button>
+            <ul class="dropdown-menu bg-secondary" aria-labelledby="dropdownMenuButton">
+              @if (Auth::user()->role == 1)
+              <li><a class="nav-link" href="{{ route('inquiry.index') }}" >
+                <i class="fas fa-clipboard"></i> Inquiry</a></li>
+              <li><a class="nav-link" href="{{ route('mylisting.index') }}" >
+                <i class="fas fa-list"></i> My Listings</a></li>
+              @endif
 
-          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
-            document.getElementById('frm-logout').submit();">
-            <i class="fas fa-sign-in-alt"></i>  Logout
-          </a>    
+              @if (Auth::user()->role == 2)
+              <li><a class="nav-link" href="{{ route('becomerealtor.index') }}">
+                <i class="fas fa-window-maximize"></i> Realtor</a></li>
+              @endif
+              <li><a class="nav-link" href="{{ route('dashboard') }}">
+                <i class="fas fa-window-maximize"></i> Dashboard</a></li>
+              <li><a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                document.getElementById('frm-logout').submit();">
+                <i class="fas fa-sign-in-alt"></i>  Logout
+              </a></li>
+            </ul>
+          </div>    
+
           <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
           </form>

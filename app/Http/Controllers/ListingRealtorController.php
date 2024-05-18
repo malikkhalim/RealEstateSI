@@ -4,28 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\{
-    Listing, Realtor
+    Listing, Realtor, User
 };
 
+use Illuminate\Support\Facades\Auth;
 
-class ListingController extends Controller
+
+class ListingRealtorController extends Controller
 {
+
+    // public function index()
+    // {
+    //     $listings = Listing::orderBy('id', 'DESC')->get();
+    //     $published_listings = $listings->where('is_published', '1');
+    //     $unpublished_listings = $listings->where('is_published', '0');
+    //     $listings = Listing::where('is_published', '1')->orderBy('id', 'DESC')->get();
+    //     return view('agents.listings.createlisting', compact('published_listings','unpublished_listings'));
+
+    // }
 
     public function index()
     {
-        $listings = Listing::orderBy('id', 'DESC')->get();
-        $published_listings = $listings->where('is_published', '1');
-        $unpublished_listings = $listings->where('is_published', '0');
-        return view('admin.layouts.listings.listings', compact('published_listings','unpublished_listings'));
-        // $listings = Listing::where('is_published', '1')->orderBy('id', 'DESC')->get();
+
+    if(Auth::user()->role == 1){
+    
+    $user = Auth::user();
+
+    // Get all listings for the authenticated user, ordered by ID in descending order
+    // $listings = Listing::where('realtor_id', $user->id)->orderBy('id', 'DESC')->get();
+
+    $listings = Listing::orderBy('id', 'DESC')->get();
+    // dd($listings);
+
+    // Filter listings based on publication status
+    $published_listings = $listings->where('is_published', '1');
+    $unpublished_listings = $listings->where('is_published', '0');
+
+    return view('agents.listings.mylisting', compact('published_listings', 'unpublished_listings'));
 
     }
+    else {
+        return route("becomerealtor");
+    };
+    
+    }
+    // Pass the filtered listings to the view
+
+
 
 
     public function create()
     {
         $realtors = Realtor::all();
-        return view('admin.layouts.listings.add-listing', compact('realtors'));
+        
+        $user = auth()->user();
+        $roleEmail = $user -> email;
+        $newrealtor = Realtor::where('email', $roleEmail)->firstOrFail();
+        return view('agents.listings.add-listing', compact('newrealtor'));
     }
 
 
@@ -71,7 +106,7 @@ class ListingController extends Controller
         if ($isSuccess) {
             
             $listing->save();
-            return redirect(route('listings.index'))->with('success', 'Listing Added!');
+            return redirect(route('mylisting.index'))->with('success', 'Listing Added!');
         } else {
             return redirect()->back()->with('error', 'Something went wrong!');
         }
@@ -81,7 +116,7 @@ class ListingController extends Controller
     public function show($id)
     {
         $listing = Listing::findOrFail($id);
-        return view('admin.layouts.listings.single-listing', compact('listing'));
+        return view('agents.listings.single-listing', compact('listing'));
     }
 
 
@@ -111,7 +146,7 @@ class ListingController extends Controller
         //function for image upload
         $this->massimageUploadHandler($request, $listing);
         $listing->save();
-        return redirect(route('listings.index'))->with('success', 'Listing Updated Successfully!');
+        return redirect(route('mylisting.index'))->with('success', 'Listing Updated Successfully!');
     }
 
 
@@ -124,7 +159,7 @@ class ListingController extends Controller
         if ($isSuccess) {
             $this->imageDeleteHandler($listing);
         }
-        return redirect(route('listings.index'))->with('success', 'Listing Deleted Successfully!');
+        return redirect(route('mylisting.index'))->with('success', 'Listing Deleted Successfully!');
     }
 
 
@@ -157,8 +192,8 @@ class ListingController extends Controller
 
     private function imageUploadHandler($image, $listing, $key)
     {
-        // $image_new_name = time() . '.' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
-        $image_new_name = $name.'.'.time().'.'.$image->getClientOriginalExtension(); 
+        $image_new_name = time() . '.' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
+        //$image_new_name = $name.'.'.time().'.'.$image->getClientOriginalExtension(); 
         $isScucess = $image->move(public_path('images/listing'), $image_new_name);
         if ($isScucess) {
             $image_url = 'images/listing/' . $image_new_name;
